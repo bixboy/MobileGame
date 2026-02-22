@@ -1,0 +1,24 @@
+namespace MMO.Network.Movement;
+
+// Structure pour definir un point en 2D sur la map isometrique
+struct Vector2D 
+{
+    x: float;
+    y: float;
+}
+
+// Le client demande a deplacer son entite
+table MoveRequest 
+{
+    entity_id: uint;
+    target_pos: Vector2D;
+}
+
+// Le server envoie l'etat actuel d'une entite
+table MovementSnapshot 
+{
+    entity_id: uint;
+    current_pos: Vector2D;
+    velocity: Vector2D;
+    is_moving: bool;
+}

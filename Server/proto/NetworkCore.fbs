@@ -1,0 +1,41 @@
+namespace MMO.Network;
+
+// L'Opcode definit le type de message contenu dans le payload bruts
+enum Opcode : ushort 
+{ 
+    None = 0, // Valeur par defaut obligatoire pour FlatBuffers (0)
+
+    // Systemes generaux (1-999)
+    C2S_Ping = 1,
+    S2C_Pong = 2,
+    C2S_Login = 100,
+    
+    // Mouvements et Positions (1000-1999)
+    C2S_MoveRequest = 1000,
+    S2C_MovementSnapshot = 1001,
+    
+    // Combat (2000-2999)
+    C2S_AttackTarget = 2000
+}
+
+// Les messages de bases directement integres ici
+table Ping 
+{
+    timestamp: long;
+}
+
+table Login 
+{
+    username: string;
+}
+
+// L'Enveloppe Reseau Universelle
+table Envelope 
+{
+    opcode: Opcode;
+    
+    // Tableau d'octets contenant le VRAI message serialise (ex: un MoveRequest)
+    payload_data: [ubyte]; 
+}
+
+root_type Envelope;
