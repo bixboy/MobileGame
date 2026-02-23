@@ -22,4 +22,4 @@
  */
 
 #define ENET_IMPLEMENTATION
-#include "network/enet.h"
+#include "enet.h"

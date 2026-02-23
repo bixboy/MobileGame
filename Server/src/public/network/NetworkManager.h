@@ -1,5 +1,5 @@
 #pragma once
-#include "network/enet.h"
+#include "enet.h"
 #include <span>
 #include "core/Config.h"
 #include "network/PacketDispatcher.h"

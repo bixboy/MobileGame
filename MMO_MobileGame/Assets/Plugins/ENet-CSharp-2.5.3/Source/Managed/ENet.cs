@@ -954,8 +954,8 @@ namespace ENet {
 		}
 
 		public static bool Initialize() {
-			// if (Native.enet_linked_version() != version)
-			// 	throw new InvalidOperationException($"Incompatible version: DLL returned {Native.enet_linked_version()} but expected {version}");
+			if (Native.enet_linked_version() != version)
+				throw new InvalidOperationException($"Incompatible version: DLL returned {Native.enet_linked_version()} but expected {version}");
 
 			return Native.enet_initialize() == 0;
 		}
@@ -964,8 +964,8 @@ namespace ENet {
 			if (callbacks == null)
 				throw new ArgumentNullException("callbacks");
 
-			// if (Native.enet_linked_version() != version)
-			// 	throw new InvalidOperationException("Incompatible version");
+			if (Native.enet_linked_version() != version)
+				throw new InvalidOperationException($"Incompatible version: DLL returned {Native.enet_linked_version()} but expected {version}");
 
 			ENetCallbacks nativeCallbacks = callbacks.NativeData;
 

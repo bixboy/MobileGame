@@ -1,9 +1,9 @@
 using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using ENet;
 using Google.FlatBuffers;
 using MMO.Network;
+
 
 public class NetworkClient : MonoBehaviour
 {
@@ -44,9 +44,7 @@ public class NetworkClient : MonoBehaviour
     {
         if (client == null) return;
 
-        // Variable pour stocker l'evenement recu
         ENet.Event netEvent;
-
         bool polled = false;
 
         while (!polled)
@@ -86,7 +84,7 @@ public class NetworkClient : MonoBehaviour
 
     private void SendPing()
     {
-        // 1. Creation du Payload Ping
+        // 1. Serialization du Payload Ping
         var pingBuilder = new FlatBufferBuilder(64);
         long currentTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         MMO.Network.Ping.StartPing(pingBuilder);
@@ -95,14 +93,14 @@ public class NetworkClient : MonoBehaviour
         pingBuilder.Finish(pingOffset.Value);
         byte[] pingBytes = pingBuilder.SizedByteArray();
 
-        // 2. Creation de l'Enveloppe (qui contient le Ping byte array)
+        // 2. Encapsulation dans l'Enveloppe (O(1) Dispatch)
         var envBuilder = new FlatBufferBuilder(128);
         var payloadVector = Envelope.CreatePayloadDataVector(envBuilder, pingBytes);
         var envOffset = Envelope.CreateEnvelope(envBuilder, Opcode.C2S_Ping, payloadVector);
         envBuilder.Finish(envOffset.Value);
         byte[] finalBytes = envBuilder.SizedByteArray();
 
-        // 3. Envoi via ENet
+        // 3. Transmission et Flush immediat
         ENet.Packet packet = default(ENet.Packet);
         packet.Create(finalBytes, ENet.PacketFlags.Reliable);
         peer.Send(0, ref packet);

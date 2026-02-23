@@ -59,17 +59,14 @@ namespace MMO::Network
             switch (event.type) 
             {
                 case ENET_EVENT_TYPE_CONNECT: // Connect
-                    LOG_INFO("DEBUG: EVENT_TYPE_CONNECT recu par le serveur !");
                     HandleConnect(event);
                     break;
 
                 case ENET_EVENT_TYPE_RECEIVE: // Receive
-                    LOG_INFO("DEBUG: EVENT_TYPE_RECEIVE recu par le serveur ({} bytes) !", event.packet->dataLength);
                     HandleReceive(event);
                     break;
 
                 case ENET_EVENT_TYPE_DISCONNECT: // Disconnect
-                    LOG_INFO("DEBUG: EVENT_TYPE_DISCONNECT recu par le serveur !");
                     HandleDisconnect(event);
                     break;
 

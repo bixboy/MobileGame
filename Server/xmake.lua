@@ -14,16 +14,13 @@ add_requires("flatbuffers")
 -- add_requires("enet") -- Using native enet-csharp instead
 
 
--- ===============/
--- Cible Serveur
--- ===============/
 target("MobileGameServer")
     set_kind("binary")
     
-    add_files("src/*.cpp", "src/private/**.cpp", "src/private/network/enet.c")
+    add_files("src/*.cpp", "src/private/**.cpp", "vendor/enet-csharp/enet.c")
     add_headerfiles("src/public/**.hpp", "src/public/**.h")
     
-    add_includedirs("src", "src/public", "src/private", "proto/generated")
+    add_includedirs("src", "src/public", "src/private", "proto/generated", "vendor/enet-csharp")
     
     add_packages("entt", "flatbuffers", "enet")
 
