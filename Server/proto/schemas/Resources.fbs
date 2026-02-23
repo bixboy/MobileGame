@@ -1,0 +1,41 @@
+include "Core.fbs";
+
+namespace MMO.Network;
+
+// ─────────────────────────────────────────────
+//  Ressources & donnees joueur
+// ─────────────────────────────────────────────
+
+table PlayerData
+{
+    account_id: int;
+    username: string;
+    pos_x: float;
+    pos_y: float;
+    food: int;
+    wood: int;
+    stone: int;
+    gold: int;
+}
+
+enum ResourceType : ubyte
+{
+    Food = 0,
+    Wood = 1,
+    Stone = 2,
+    Gold = 3
+}
+
+table ModifyResources
+{
+    resource_type: ResourceType;
+    delta: int;
+}
+
+table ResourceUpdate
+{
+    food: int;
+    wood: int;
+    stone: int;
+    gold: int;
+}

@@ -1,0 +1,20 @@
+include "Core.fbs";
+
+namespace MMO.Network;
+
+// ─────────────────────────────────────────────
+//  Authentification
+// ─────────────────────────────────────────────
+
+table Login 
+{
+    username: string;
+    password: string;
+}
+
+table LoginResult 
+{
+    success: bool;
+    account_id: int;
+    message: string;
+}

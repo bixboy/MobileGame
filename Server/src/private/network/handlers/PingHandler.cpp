@@ -1,6 +1,6 @@
 #include "network/handlers/PingHandler.h"
 #include "network/PacketBuilder.h"
-#include "NetworkCore_generated.h"
+#include "Core_generated.h"
 #include "utils/Logger.h"
 #include <chrono>
 

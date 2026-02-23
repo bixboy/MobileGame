@@ -1,7 +1,7 @@
 #include "network/handlers/ResourceHandler.h"
 #include "network/PacketBuilder.h"
 #include "world/KingdomWorld.h"
-#include "NetworkCore_generated.h"
+#include "Resources_generated.h"
 #include "ecs/PlayerComponents.h"
 #include "utils/Logger.h"
 

@@ -1,6 +1,6 @@
 #include "network/handlers/LoginHandler.h"
 #include "network/PacketBuilder.h"
-#include "NetworkCore_generated.h"
+#include "Auth_generated.h"
 #include "utils/Logger.h"
 #include "utils/PasswordHasher.h"
 #include <chrono>

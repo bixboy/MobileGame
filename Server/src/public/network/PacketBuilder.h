@@ -1,6 +1,6 @@
 #pragma once
 #include "enet.h"
-#include "NetworkCore_generated.h"
+#include "Core_generated.h"
 
 
 namespace MMO::Network

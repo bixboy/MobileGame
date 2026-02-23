@@ -2,7 +2,7 @@
 #include "enet.h"
 #include <functional>
 #include <unordered_map>
-#include "NetworkCore_generated.h"
+#include "Core_generated.h"
 
 
 namespace MMO::Network 

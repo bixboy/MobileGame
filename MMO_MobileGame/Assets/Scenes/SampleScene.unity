@@ -4698,7 +4698,7 @@ MonoBehaviour:
   networkClient: {fileID: 1356303163}
   kingdomPanel: {fileID: 1586372952}
   listContainer: {fileID: 907290077}
-  kingdomButtonPrefab: {fileID: 8953548145504118646, guid: 56502891711d63e498d6792f17f60822, type: 3}
+  kingdomButtonPrefab: {fileID: 8953548145504118646, guid: 96d077926f2479647b450efee3c8e936, type: 3}
   statusText: {fileID: 569468453}
 --- !u!114 &1586372955
 MonoBehaviour:

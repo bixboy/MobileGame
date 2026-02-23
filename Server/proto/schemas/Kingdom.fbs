@@ -1,0 +1,34 @@
+include "Core.fbs";
+
+namespace MMO.Network;
+
+// ─────────────────────────────────────────────
+//  Royaumes — selection et liste
+// ─────────────────────────────────────────────
+
+// Une entree dans la liste des royaumes
+table KingdomEntry
+{
+    id: int;
+    name: string;
+    player_count: int;
+    max_players: int;
+    status: ubyte; // 0=offline, 1=online, 2=full, 3=maintenance
+}
+
+// Liste des royaumes envoyee apres login
+table KingdomList
+{
+    kingdoms: [KingdomEntry];
+}
+
+// Le client choisit un royaume (meme connexion, pas de reconnexion)
+table SelectKingdom
+{
+    kingdom_id: int;
+}
+
+// Le client demande la liste des royaumes (post-login)
+table RequestKingdoms
+{
+}

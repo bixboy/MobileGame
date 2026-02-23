@@ -2,7 +2,8 @@
 #include "network/PacketBuilder.h"
 #include "world/KingdomWorld.h"
 #include "ecs/PlayerComponents.h"
-#include "NetworkCore_generated.h"
+#include "Kingdom_generated.h"
+#include "Resources_generated.h"
 #include "utils/Logger.h"
 
 

@@ -1,7 +1,40 @@
-# This .gitignore file handles both the Unity project and the Server subdirectories.
-# 
-# Unity Ignores
-#
+# ============================================================
+#  MMO MobileGame — .gitignore
+#  Covers: Unity Project, C++ Server (xmake), IDE, OS, Proto
+# ============================================================
+
+
+# ─────────────────────────────────────────────
+#  OS / IDE
+# ─────────────────────────────────────────────
+
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+._*
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.DotSettings.user
+
+# VSCode
+.vscode/
+
+
+# ─────────────────────────────────────────────
+#  Unity (MMO_MobileGame/)
+# ─────────────────────────────────────────────
+
 .utmp/
 [Ll]ibrary/
 [Tt]emp/
@@ -10,31 +43,36 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Mono / crash reports
+mono_crash.*
+sysinfo.txt
 *.log
 
+# Blender temp
 *.blend1
 *.blend1.meta
 
-[Mm]emoryCaptures/
+# Unity generated meta
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
 
-[Rr]ecordings/
+# Build outputs
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
 
+# JetBrains Rider plugin
 MMO_MobileGame/[Aa]ssets/Plugins/Editor/JetBrains*
-*.DotSettings.user
 
-.vs/
-
-.gradle/
-
-ExportedObj/
-.consulo/
-*.csproj
+# Generated IDE project files
 *.unityproj
-*.sln
-*.suo
 *.tmp
-*.user
-*.userprefs
 *.pidb
 *.booproj
 *.svd
@@ -42,50 +80,58 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+ExportedObj/
+.consulo/
 
-# Unity3D generated meta files
-*.pidb.meta
-*.pdb.meta
-*.mdb.meta
-
-# Unity3D generated file on crash reports
-sysinfo.txt
-
-# Mono auto generated files
-mono_crash.*
-
-# Builds
-*.apk
-*.aab
-*.unitypackage
-*.unitypackage.meta
-*.app
-
-# Crashlytics generated file
+# Crashlytics
 crashlytics-build.properties
 
-# TestRunner generated files
+# TestRunner
 InitTestScene*.unity*
+MMO_MobileGame/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-# Addressables default ignores, before user customizations
+# Addressables
 ServerData/
 MMO_MobileGame/[Aa]ssets/StreamingAssets/aa*
 MMO_MobileGame/[Aa]ssets/AddressableAssetsData/link.xml*
 MMO_MobileGame/[Aa]ssets/Addressables_Temp*
 MMO_MobileGame/[Aa]ssets/AddressableAssetsData/*/*.bin*
 
-# Visual Scripting auto-generated files
-MMO_MobileGame/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
-MMO_MobileGame/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
-MMO_MobileGame/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
-MMO_MobileGame/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+# Visual Scripting
+MMO_MobileGame/[Aa]ssets/Unity.VisualScripting.Generated/
 
-# Auto-generated scenes by play mode tests
-MMO_MobileGame/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+# Gradle (Android)
+.gradle/
 
-# ----------------------------------------------------
-# C++ Server (xmake / Visual Studio)
-# ----------------------------------------------------
-build/
+
+# ─────────────────────────────────────────────
+#  C++ Server (Server/)
+# ─────────────────────────────────────────────
+
+# xmake
 .xmake/
+Server/build/
 compile_commands.json
+
+# Visual Studio generated projects
+Server/vs2022/
+Server/vsxmake2022/
+
+# Build logs
+Server/build_err.txt
+Server/build_log.txt
+
+# Runtime databases (generated at runtime)
+*.db
+*.db-wal
+*.db-shm
+
+# FlatBuffers generated code (regenerable via GenerateProto.bat)
+Server/proto/generated/
+
+
+# ─────────────────────────────────────────────
+#  Unity — FlatBuffers generated C# (regenerable)
+# ─────────────────────────────────────────────
+
+MMO_MobileGame/Assets/Scripts/Network/Generated/
