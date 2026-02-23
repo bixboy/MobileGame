@@ -21,10 +21,11 @@ namespace MMO::Network
         }
 
         ENetAddress address;
-        address.host = ENET_HOST_ANY;
+        enet_address_set_ip(&address, "0.0.0.0");
         address.port = config.port;
 
-        m_host = enet_host_create(&address, config.maxPlayers, 2, 0, 0);
+        // 6 args for ENet-CSharp
+        m_host = enet_host_create(&address, config.maxPlayers, 2, 0, 0, 0);
 
         if (m_host == nullptr) 
         {
@@ -58,14 +59,17 @@ namespace MMO::Network
             switch (event.type) 
             {
                 case ENET_EVENT_TYPE_CONNECT: // Connect
+                    LOG_INFO("DEBUG: EVENT_TYPE_CONNECT recu par le serveur !");
                     HandleConnect(event);
                     break;
 
                 case ENET_EVENT_TYPE_RECEIVE: // Receive
+                    LOG_INFO("DEBUG: EVENT_TYPE_RECEIVE recu par le serveur ({} bytes) !", event.packet->dataLength);
                     HandleReceive(event);
                     break;
 
                 case ENET_EVENT_TYPE_DISCONNECT: // Disconnect
+                    LOG_INFO("DEBUG: EVENT_TYPE_DISCONNECT recu par le serveur !");
                     HandleDisconnect(event);
                     break;
 
@@ -79,7 +83,7 @@ namespace MMO::Network
     void NetworkManager::HandleConnect(const ENetEvent& event) 
     {
         char ip[64];
-        enet_address_get_host_ip(&event.peer->address, ip, sizeof(ip));
+        enet_address_get_ip(&event.peer->address, ip, sizeof(ip));
         LOG_INFO("Un nouveau client s'est connecte (IP: {}, Port: {})", ip, event.peer->address.port);
     }
 

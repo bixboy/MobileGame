@@ -11,7 +11,7 @@ add_rules("plugin.vsxmake.autoupdate")
 -- =============/
 add_requires("entt")
 add_requires("flatbuffers")
-add_requires("enet")
+-- add_requires("enet") -- Using native enet-csharp instead
 
 
 -- ===============/
@@ -20,7 +20,7 @@ add_requires("enet")
 target("MobileGameServer")
     set_kind("binary")
     
-    add_files("src/*.cpp", "src/private/**.cpp")
+    add_files("src/*.cpp", "src/private/**.cpp", "src/private/network/enet.c")
     add_headerfiles("src/public/**.hpp", "src/public/**.h")
     
     add_includedirs("src", "src/public", "src/private", "proto/generated")

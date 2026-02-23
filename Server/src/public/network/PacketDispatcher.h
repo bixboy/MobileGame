@@ -1,5 +1,5 @@
 #pragma once
-#include <enet/enet.h>
+#include "network/enet.h"
 #include <functional>
 #include <unordered_map>
 #include "NetworkCore_generated.h"

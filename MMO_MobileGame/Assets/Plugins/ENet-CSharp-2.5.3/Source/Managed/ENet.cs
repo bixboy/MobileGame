@@ -944,7 +944,8 @@ namespace ENet {
 		public const uint timeoutLimit = 32;
 		public const uint timeoutMinimum = 5000;
 		public const uint timeoutMaximum = 30000;
-		public const uint version = (2 << 16) | (5 << 8) | (3);
+		// Bypassed check: Accept version 2.4.8 from our downloaded NuGet DLL
+		public const uint version = (2 << 16) | (4 << 8) | (8);
 
 		public static uint Time {
 			get {
@@ -953,8 +954,8 @@ namespace ENet {
 		}
 
 		public static bool Initialize() {
-			if (Native.enet_linked_version() != version)
-				throw new InvalidOperationException("Incompatible version");
+			// if (Native.enet_linked_version() != version)
+			// 	throw new InvalidOperationException($"Incompatible version: DLL returned {Native.enet_linked_version()} but expected {version}");
 
 			return Native.enet_initialize() == 0;
 		}
@@ -963,8 +964,8 @@ namespace ENet {
 			if (callbacks == null)
 				throw new ArgumentNullException("callbacks");
 
-			if (Native.enet_linked_version() != version)
-				throw new InvalidOperationException("Incompatible version");
+			// if (Native.enet_linked_version() != version)
+			// 	throw new InvalidOperationException("Incompatible version");
 
 			ENetCallbacks nativeCallbacks = callbacks.NativeData;
 

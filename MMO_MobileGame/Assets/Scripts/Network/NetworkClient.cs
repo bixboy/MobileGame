@@ -2,6 +2,8 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using ENet;
+using Google.FlatBuffers;
+using MMO.Network;
 
 public class NetworkClient : MonoBehaviour
 {
@@ -33,9 +35,9 @@ public class NetworkClient : MonoBehaviour
         // Le client n'a besoin d'ecouter sur aucun port en particulier (on met 0)
         client.Create();
 
-        // 3. Lancer la connexion
+        // 3. Lancer la connexion (doit correspondre au host C++ qui accepte 2 channels par defaut)
         Debug.Log($"Tentative de connexion au serveur {serverIP}:{port}...");
-        peer = client.Connect(address, 4); // 4 channels de communication max
+        peer = client.Connect(address, 2); // 2 channels de communication max (comme config.maxPlayers, 2, 0, 0 en C++)
     }
 
     private void Update()
@@ -45,22 +47,27 @@ public class NetworkClient : MonoBehaviour
         // Variable pour stocker l'evenement recu
         ENet.Event netEvent;
 
-        // 4. Depiler les messages recus du serveur (Non-bloquant)
-        while (client.Service(0, out netEvent) > 0)
+        bool polled = false;
+
+        while (!polled)
         {
+            if (client.CheckEvents(out netEvent) <= 0)
+            {
+                if (client.Service(15, out netEvent) <= 0)
+                    break;
+                polled = true;
+            }
+
             switch (netEvent.Type)
             {
                 case ENet.EventType.Connect:
                     Debug.Log("<color=green>Client C# : Connexion reussie au serveur C++ !</color>");
                     isConnected = true;
-                    
-                    // --- TEST: On envoie un ping immediatement apres la connexion ---
                     SendPing();
                     break;
 
                 case ENet.EventType.Receive:
                     Debug.Log($"Paquet recu ! (Taille: {netEvent.Packet.Length})");
-                    // On detruit toujours le paquet ENet apres l'avoir lu (pour eviter les fuites memoire)
                     netEvent.Packet.Dispose();
                     break;
 
@@ -79,8 +86,29 @@ public class NetworkClient : MonoBehaviour
 
     private void SendPing()
     {
-        // TODO: (Prochaine etape, integration de Flatbuffers C#)
-        Debug.Log("TODO: Envoyer le paquet Ping en FlatBuffers.");
+        // 1. Creation du Payload Ping
+        var pingBuilder = new FlatBufferBuilder(64);
+        long currentTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        MMO.Network.Ping.StartPing(pingBuilder);
+        MMO.Network.Ping.AddTimestamp(pingBuilder, currentTimestamp);
+        var pingOffset = MMO.Network.Ping.EndPing(pingBuilder);
+        pingBuilder.Finish(pingOffset.Value);
+        byte[] pingBytes = pingBuilder.SizedByteArray();
+
+        // 2. Creation de l'Enveloppe (qui contient le Ping byte array)
+        var envBuilder = new FlatBufferBuilder(128);
+        var payloadVector = Envelope.CreatePayloadDataVector(envBuilder, pingBytes);
+        var envOffset = Envelope.CreateEnvelope(envBuilder, Opcode.C2S_Ping, payloadVector);
+        envBuilder.Finish(envOffset.Value);
+        byte[] finalBytes = envBuilder.SizedByteArray();
+
+        // 3. Envoi via ENet
+        ENet.Packet packet = default(ENet.Packet);
+        packet.Create(finalBytes, ENet.PacketFlags.Reliable);
+        peer.Send(0, ref packet);
+        client.Flush();
+        
+        Debug.Log($"Ping {currentTimestamp} envoye avec succes en FlatBuffers au serveur !");
     }
 
     private void OnDestroy()
