@@ -1,17 +1,17 @@
 ﻿#pragma once
+#include <string>
 #include <cstdint>
 
 
-namespace MMO 
+namespace MMO
 {
+    // Configuration globale du serveur
     struct ServerConfig 
     {
-        int tickRate = 20; // Tick Rate
-        
-        std::uint16_t port = 7777; // Port du server
-        
-        int maxPlayers = 1000; // Max players
-        
-        int workerThreads = 4; // Number of threads
+        int tickRate = 20;
+        std::uint16_t port = 7777;
+        int maxPlayers = 1000;
+        std::string kingdomsConfigPath = "kingdoms.json";    // Chemin du fichier de config des royaumes
+        std::string dbPath = "game.db";                      // Chemin de la base de donnees
     };
 }

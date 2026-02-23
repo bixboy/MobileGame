@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Avalon",
+        "ip": "127.0.0.1",
+        "port": 7780,
+        "maxPlayers": 1000
+    },
+    {
+        "id": 2,
+        "name": "Midgard",
+        "ip": "127.0.0.1",
+        "port": 7781,
+        "maxPlayers": 1000
+    }
+]

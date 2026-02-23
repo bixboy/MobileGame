@@ -3,6 +3,7 @@
 #include <span>
 #include "core/Config.h"
 #include "network/PacketDispatcher.h"
+#include "network/SessionManager.h"
 
 
 namespace MMO::Network 
@@ -13,27 +14,31 @@ namespace MMO::Network
         NetworkManager();
         ~NetworkManager();
 
+        // Initialise ENet et cree le serveur sur le port configure
         bool Initialize(const ServerConfig& config);
+
+        // Arrete le serveur et libere les ressources ENet
         void Shutdown();
 
-        // Appele par le GameLoop a chaque tick pour lire les messages ENet
+        // Traite tous les evenements ENet en attente (non-bloquant)
         void ProcessEvents();
         
-        // Permet d'envoyer un FlatBuffer binaire a un pair precis
+        // Envoie un paquet a un client specifique
         void SendPacket(ENetPeer* peer, std::span<const uint8_t> data, bool reliable);
         
-        // Permet de diffuser un FlatBuffer a tout le monde
+        // Envoie un paquet a tous les clients connectes
         void BroadcastPacket(std::span<const uint8_t> data, bool reliable);
         
-        // Permet d'enregistrer les fonctions a l'exterieur
         PacketDispatcher& GetDispatcher() { return m_dispatcher; }
+        SessionManager& GetSessionManager() { return m_sessionManager; }
 
     private:
         void HandleConnect(const ENetEvent& event);
         void HandleReceive(const ENetEvent& event);
         void HandleDisconnect(const ENetEvent& event);
 
-        ENetHost* m_host;
-        PacketDispatcher m_dispatcher;
+        ENetHost* m_host;                   // Serveur ENet
+        PacketDispatcher m_dispatcher;      // Routage des paquets
+        SessionManager m_sessionManager;    // Gestion des sessions joueurs
     };
 }

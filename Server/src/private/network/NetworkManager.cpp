@@ -1,6 +1,7 @@
 #include "network/NetworkManager.h"
 #include "utils/Logger.h"
 
+
 namespace MMO::Network 
 {
     NetworkManager::NetworkManager() : m_host(nullptr) 
@@ -14,19 +15,19 @@ namespace MMO::Network
 
     bool NetworkManager::Initialize(const ServerConfig& config) 
     {
+        // Initialisation de la librairie ENet
         if (enet_initialize() != 0) 
         {
             LOG_ERROR("Une erreur est survenue lors de l'initialisation de ENet.");
             return false;
         }
 
+        // Creation du serveur sur le port configure
         ENetAddress address;
         enet_address_set_ip(&address, "0.0.0.0");
         address.port = config.port;
 
-        // 6 args for ENet-CSharp
         m_host = enet_host_create(&address, config.maxPlayers, 2, 0, 0, 0);
-
         if (m_host == nullptr) 
         {
             LOG_ERROR("Une erreur est survenue lors de la creation du serveur ENet sur le port {}", config.port);
@@ -44,10 +45,12 @@ namespace MMO::Network
             enet_host_destroy(m_host);
             m_host = nullptr;
         }
+        
         enet_deinitialize();
         LOG_INFO("Serveur ENet arrete.");
     }
 
+    // Traite les evenements ENet (connexion, reception, deconnexion)
     void NetworkManager::ProcessEvents() 
     {
         if (!m_host)
@@ -58,15 +61,19 @@ namespace MMO::Network
         {
             switch (event.type) 
             {
-                case ENET_EVENT_TYPE_CONNECT: // Connect
+                case ENET_EVENT_TYPE_CONNECT:
                     HandleConnect(event);
                     break;
 
-                case ENET_EVENT_TYPE_RECEIVE: // Receive
+                case ENET_EVENT_TYPE_RECEIVE:
                     HandleReceive(event);
                     break;
 
-                case ENET_EVENT_TYPE_DISCONNECT: // Disconnect
+                case ENET_EVENT_TYPE_DISCONNECT:
+                    HandleDisconnect(event);
+                    break;
+                
+                case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
                     HandleDisconnect(event);
                     break;
 
@@ -76,29 +83,27 @@ namespace MMO::Network
         }
     }
 
-    // Connexion
+    // Nouvelle connexion - cree une session via le SessionManager
     void NetworkManager::HandleConnect(const ENetEvent& event) 
     {
-        char ip[64];
-        enet_address_get_ip(&event.peer->address, ip, sizeof(ip));
-        LOG_INFO("Un nouveau client s'est connecte (IP: {}, Port: {})", ip, event.peer->address.port);
+        m_sessionManager.OnConnect(event.peer);
     }
 
-    // Packet Recue
+    // Paquet recu - deserialise et dispatch vers le bon handler
     void NetworkManager::HandleReceive(const ENetEvent& event) 
     {
         m_dispatcher.Dispatch(event.peer, event.packet->data, event.packet->dataLength);
         enet_packet_destroy(event.packet);
     }
 
-    // Deconnexion
+    // Deconnexion - supprime la session et notifie le GameLoop
     void NetworkManager::HandleDisconnect(const ENetEvent& event) 
     {
-        LOG_INFO("Un client s'est deconnecte.");
+        m_sessionManager.OnDisconnect(event.peer);
     }
 
     
-    // Envoie d'un packet
+    // Envoie un paquet a un client specifique
     void NetworkManager::SendPacket(ENetPeer* peer, std::span<const uint8_t> data, bool reliable) 
     {
         if (!peer)
@@ -110,7 +115,7 @@ namespace MMO::Network
         enet_peer_send(peer, 0, packet);
     }
 
-    
+    // Envoie un paquet a tous les clients connectes
     void NetworkManager::BroadcastPacket(std::span<const uint8_t> data, bool reliable) 
     {
         if (!m_host)

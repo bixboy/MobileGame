@@ -11,7 +11,9 @@ add_rules("plugin.vsxmake.autoupdate")
 -- =============/
 add_requires("entt")
 add_requires("flatbuffers")
--- add_requires("enet") -- Using native enet-csharp instead
+add_requires("sqlitecpp")
+add_requires("libsodium")
+add_requires("nlohmann_json")
 
 
 target("MobileGameServer")
@@ -22,9 +24,13 @@ target("MobileGameServer")
     
     add_includedirs("src", "src/public", "src/private", "proto/generated", "vendor/enet-csharp")
     
-    add_packages("entt", "flatbuffers", "enet")
+    add_packages("entt", "flatbuffers", "sqlitecpp", "libsodium", "nlohmann_json")
 
-    add_defines("NOMINMAX", "WIN32_LEAN_AND_MEAN")
+    add_defines("NOMINMAX")
+
+    if is_plat("windows") then
+        add_cxflags("/wd5287", {force = true})
+    end
 
     -- ====================/
     -- Environnement Spec
@@ -38,3 +44,7 @@ target("MobileGameServer")
         set_symbols("debug")
         add_defines("DEBUG_MODE")
     end
+
+    after_build(function (target)
+        os.cp("kingdoms.json", target:targetdir())
+    end)

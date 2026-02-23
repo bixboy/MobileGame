@@ -10,8 +10,23 @@
     <Filter Include="src\private">
       <UniqueIdentifier>{4A82E8B9-42F6-4EB8-BCEA-C51D421D3392}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\private\database">
+      <UniqueIdentifier>{7E5DC542-4590-45D4-99A6-636D2D97E05A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\private\database\repositories">
+      <UniqueIdentifier>{CB3A7854-D663-4080-9704-154C0FC80F06}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\private\network">
       <UniqueIdentifier>{4D9E11EC-F8E3-45B9-AFBC-D2862F60E4D2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\private\network\handlers">
+      <UniqueIdentifier>{12AA4372-4B31-4A15-A486-43671C1E801E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\enet-csharp">
+      <UniqueIdentifier>{95DB0ADB-61E8-4A4C-AC2D-07F6258D18CD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{CD448417-32E6-47AB-81EA-11B644332010}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\public\core">
       <UniqueIdentifier>{B52AC86E-45B1-4579-AE01-F8F8565D81C6}</UniqueIdentifier>
@@ -19,11 +34,20 @@
     <Filter Include="src\public">
       <UniqueIdentifier>{50B680B9-68FA-4A5B-A639-08304519DE33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\public\database">
+      <UniqueIdentifier>{17CCF02E-A018-4CAC-BEDC-419417435DCA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\public\database\repositories">
+      <UniqueIdentifier>{9FEEC6AB-D9F3-4C24-8C21-6FD8F697E21E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\public\math">
       <UniqueIdentifier>{08233003-068E-469D-BA0D-A0C3E32494CB}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\public\network">
       <UniqueIdentifier>{C7910AA7-258C-4A47-9DC9-F8612B45D465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\public\network\handlers">
+      <UniqueIdentifier>{2079020C-ACDF-4931-A577-F36C8BCD5194}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\public\utils">
       <UniqueIdentifier>{D21FE2C6-5F5F-4172-A9F6-9C8528CCB0BE}</UniqueIdentifier>
@@ -36,8 +60,32 @@
     <ClCompile Include="..\..\src\private\core\GameLoop.cpp">
       <Filter>src\private\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\private\database\DatabaseManager.cpp">
+      <Filter>src\private\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\database\repositories\SqliteAccountRepository.cpp">
+      <Filter>src\private\database\repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\Handlers.cpp">
+      <Filter>src\private\network</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\private\network\NetworkManager.cpp">
       <Filter>src\private\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\PacketDispatcher.cpp">
+      <Filter>src\private\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\SessionManager.cpp">
+      <Filter>src\private\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\handlers\LoginHandler.cpp">
+      <Filter>src\private\network\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\handlers\PingHandler.cpp">
+      <Filter>src\private\network\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\enet-csharp\enet.c">
+      <Filter>vendor\enet-csharp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,22 +98,49 @@
     <ClInclude Include="..\..\src\public\core\Types.h">
       <Filter>src\public\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\public\database\ConcurrentQueue.h">
+      <Filter>src\public\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\database\DatabaseManager.h">
+      <Filter>src\public\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\database\repositories\IAccountRepository.h">
+      <Filter>src\public\database\repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\database\repositories\SqliteAccountRepository.h">
+      <Filter>src\public\database\repositories</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\public\math\Random.h">
       <Filter>src\public\math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\public\math\Vector2.h">
       <Filter>src\public\math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\public\network\Handlers.h">
+      <Filter>src\public\network</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\public\network\NetworkManager.h">
+      <Filter>src\public\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\network\PacketBuilder.h">
       <Filter>src\public\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\public\network\PacketDispatcher.h">
       <Filter>src\public\network</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\public\network\SessionManager.h">
+      <Filter>src\public\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\network\handlers\LoginHandler.h">
+      <Filter>src\public\network\handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\public\network\handlers\PingHandler.h">
+      <Filter>src\public\network\handlers</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\public\utils\Logger.h">
       <Filter>src\public\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\public\utils\ThreadPool.h">
+    <ClInclude Include="..\..\src\public\utils\PasswordHasher.h">
       <Filter>src\public\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\public\utils\Time.h">

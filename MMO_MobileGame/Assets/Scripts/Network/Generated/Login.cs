@@ -26,16 +26,26 @@ public struct Login : IFlatbufferObject
   public ArraySegment<byte>? GetUsernameBytes() { return __p.__vector_as_arraysegment(4); }
 #endif
   public byte[] GetUsernameArray() { return __p.__vector_as_array<byte>(4); }
+  public string Password { get { int o = __p.__offset(6); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetPasswordBytes() { return __p.__vector_as_span<byte>(6, 1); }
+#else
+  public ArraySegment<byte>? GetPasswordBytes() { return __p.__vector_as_arraysegment(6); }
+#endif
+  public byte[] GetPasswordArray() { return __p.__vector_as_array<byte>(6); }
 
   public static Offset<MMO.Network.Login> CreateLogin(FlatBufferBuilder builder,
-      StringOffset usernameOffset = default(StringOffset)) {
-    builder.StartTable(1);
+      StringOffset usernameOffset = default(StringOffset),
+      StringOffset passwordOffset = default(StringOffset)) {
+    builder.StartTable(2);
+    Login.AddPassword(builder, passwordOffset);
     Login.AddUsername(builder, usernameOffset);
     return Login.EndLogin(builder);
   }
 
-  public static void StartLogin(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartLogin(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddUsername(FlatBufferBuilder builder, StringOffset usernameOffset) { builder.AddOffset(0, usernameOffset.Value, 0); }
+  public static void AddPassword(FlatBufferBuilder builder, StringOffset passwordOffset) { builder.AddOffset(1, passwordOffset.Value, 0); }
   public static Offset<MMO.Network.Login> EndLogin(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<MMO.Network.Login>(o);
@@ -49,6 +59,7 @@ static public class LoginVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyString(tablePos, 4 /*Username*/, false)
+      && verifier.VerifyString(tablePos, 6 /*Password*/, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

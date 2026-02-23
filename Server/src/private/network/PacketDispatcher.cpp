@@ -1,21 +1,24 @@
 #include "network/PacketDispatcher.h"
 #include "utils/Logger.h"
 
+
 namespace MMO::Network 
 {
     void PacketDispatcher::RegisterHandler(Opcode opcode, PacketHandlerFunc handler) 
     {
+        // Empeche les doublons d'enregistrement
         if (m_handlers.contains(opcode)) 
         {
             LOG_WARN("Un Handler est deja enregistre pour l'Opcode: {}", static_cast<uint16_t>(opcode));
             return;
         }
+        
         m_handlers[opcode] = std::move(handler);
     }
 
     void PacketDispatcher::Dispatch(ENetPeer* peer, const uint8_t* data, size_t size) 
     {
-        // 1. Verification de securite FlatBuffers
+        // Verification de l'integrite du buffer FlatBuffers
         flatbuffers::Verifier verifier(data, size);
         if (!VerifyEnvelopeBuffer(verifier)) 
         {
@@ -23,13 +26,14 @@ namespace MMO::Network
             return;
         }
 
-        // 2. Lecture de l'Envelope
+        // Lecture de l'envelope
         const Envelope* envelope = GetEnvelope(data);
-        if (!envelope) return;
+        if (!envelope)
+            return;
 
         Opcode opcode = envelope->opcode();
 
-        // 3. Routage O(1) vers le Handler concerne
+        // Routage vers le handler concerne
         auto it = m_handlers.find(opcode);
         if (it != m_handlers.end()) 
         {

@@ -14,13 +14,14 @@ namespace MMO::Network
     public:
         PacketDispatcher() = default;
 
-        // Enregistre un Handler
+        // Enregistre un handler pour un opcode donne
         void RegisterHandler(Opcode opcode, PacketHandlerFunc handler);
 
-        // De-serialize et dispatch vers le bon Handler
+        // Deserialise l'envelope et dispatch vers le handler concerne
         void Dispatch(ENetPeer* peer, const uint8_t* data, size_t size);
 
     private:
+        // Table de routage Opcode → Handler
         std::unordered_map<Opcode, PacketHandlerFunc> m_handlers;
     };
 }

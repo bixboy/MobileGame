@@ -19,8 +19,35 @@ namespace Network {
 struct Ping;
 struct PingBuilder;
 
+struct Pong;
+struct PongBuilder;
+
 struct Login;
 struct LoginBuilder;
+
+struct LoginResult;
+struct LoginResultBuilder;
+
+struct PlayerData;
+struct PlayerDataBuilder;
+
+struct ModifyResources;
+struct ModifyResourcesBuilder;
+
+struct ResourceUpdate;
+struct ResourceUpdateBuilder;
+
+struct KingdomEntry;
+struct KingdomEntryBuilder;
+
+struct KingdomList;
+struct KingdomListBuilder;
+
+struct SelectKingdom;
+struct SelectKingdomBuilder;
+
+struct RequestKingdoms;
+struct RequestKingdomsBuilder;
 
 struct Envelope;
 struct EnvelopeBuilder;
@@ -30,6 +57,13 @@ enum Opcode : uint16_t {
   Opcode_C2S_Ping = 1,
   Opcode_S2C_Pong = 2,
   Opcode_C2S_Login = 100,
+  Opcode_S2C_LoginResult = 101,
+  Opcode_S2C_PlayerData = 102,
+  Opcode_C2S_ModifyResources = 103,
+  Opcode_S2C_ResourceUpdate = 104,
+  Opcode_S2C_KingdomList = 105,
+  Opcode_C2S_SelectKingdom = 106,
+  Opcode_C2S_RequestKingdoms = 109,
   Opcode_C2S_MoveRequest = 1000,
   Opcode_S2C_MovementSnapshot = 1001,
   Opcode_C2S_AttackTarget = 2000,
@@ -37,12 +71,19 @@ enum Opcode : uint16_t {
   Opcode_MAX = Opcode_C2S_AttackTarget
 };
 
-inline const Opcode (&EnumValuesOpcode())[7] {
+inline const Opcode (&EnumValuesOpcode())[14] {
   static const Opcode values[] = {
     Opcode_None,
     Opcode_C2S_Ping,
     Opcode_S2C_Pong,
     Opcode_C2S_Login,
+    Opcode_S2C_LoginResult,
+    Opcode_S2C_PlayerData,
+    Opcode_C2S_ModifyResources,
+    Opcode_S2C_ResourceUpdate,
+    Opcode_S2C_KingdomList,
+    Opcode_C2S_SelectKingdom,
+    Opcode_C2S_RequestKingdoms,
     Opcode_C2S_MoveRequest,
     Opcode_S2C_MovementSnapshot,
     Opcode_C2S_AttackTarget
@@ -56,11 +97,54 @@ inline const char *EnumNameOpcode(Opcode e) {
     case Opcode_C2S_Ping: return "C2S_Ping";
     case Opcode_S2C_Pong: return "S2C_Pong";
     case Opcode_C2S_Login: return "C2S_Login";
+    case Opcode_S2C_LoginResult: return "S2C_LoginResult";
+    case Opcode_S2C_PlayerData: return "S2C_PlayerData";
+    case Opcode_C2S_ModifyResources: return "C2S_ModifyResources";
+    case Opcode_S2C_ResourceUpdate: return "S2C_ResourceUpdate";
+    case Opcode_S2C_KingdomList: return "S2C_KingdomList";
+    case Opcode_C2S_SelectKingdom: return "C2S_SelectKingdom";
+    case Opcode_C2S_RequestKingdoms: return "C2S_RequestKingdoms";
     case Opcode_C2S_MoveRequest: return "C2S_MoveRequest";
     case Opcode_S2C_MovementSnapshot: return "S2C_MovementSnapshot";
     case Opcode_C2S_AttackTarget: return "C2S_AttackTarget";
     default: return "";
   }
+}
+
+enum ResourceType : uint8_t {
+  ResourceType_Food = 0,
+  ResourceType_Wood = 1,
+  ResourceType_Stone = 2,
+  ResourceType_Gold = 3,
+  ResourceType_MIN = ResourceType_Food,
+  ResourceType_MAX = ResourceType_Gold
+};
+
+inline const ResourceType (&EnumValuesResourceType())[4] {
+  static const ResourceType values[] = {
+    ResourceType_Food,
+    ResourceType_Wood,
+    ResourceType_Stone,
+    ResourceType_Gold
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesResourceType() {
+  static const char * const names[5] = {
+    "Food",
+    "Wood",
+    "Stone",
+    "Gold",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameResourceType(ResourceType e) {
+  if (::flatbuffers::IsOutRange(e, ResourceType_Food, ResourceType_Gold)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesResourceType()[index];
 }
 
 struct Ping FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -104,18 +188,75 @@ inline ::flatbuffers::Offset<Ping> CreatePing(
   return builder_.Finish();
 }
 
+struct Pong FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PongBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CLIENT_TIMESTAMP = 4,
+    VT_SERVER_TIMESTAMP = 6
+  };
+  int64_t client_timestamp() const {
+    return GetField<int64_t>(VT_CLIENT_TIMESTAMP, 0);
+  }
+  int64_t server_timestamp() const {
+    return GetField<int64_t>(VT_SERVER_TIMESTAMP, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int64_t>(verifier, VT_CLIENT_TIMESTAMP, 8) &&
+           VerifyField<int64_t>(verifier, VT_SERVER_TIMESTAMP, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct PongBuilder {
+  typedef Pong Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_client_timestamp(int64_t client_timestamp) {
+    fbb_.AddElement<int64_t>(Pong::VT_CLIENT_TIMESTAMP, client_timestamp, 0);
+  }
+  void add_server_timestamp(int64_t server_timestamp) {
+    fbb_.AddElement<int64_t>(Pong::VT_SERVER_TIMESTAMP, server_timestamp, 0);
+  }
+  explicit PongBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Pong> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Pong>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Pong> CreatePong(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int64_t client_timestamp = 0,
+    int64_t server_timestamp = 0) {
+  PongBuilder builder_(_fbb);
+  builder_.add_server_timestamp(server_timestamp);
+  builder_.add_client_timestamp(client_timestamp);
+  return builder_.Finish();
+}
+
 struct Login FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef LoginBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_USERNAME = 4
+    VT_USERNAME = 4,
+    VT_PASSWORD = 6
   };
   const ::flatbuffers::String *username() const {
     return GetPointer<const ::flatbuffers::String *>(VT_USERNAME);
+  }
+  const ::flatbuffers::String *password() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_PASSWORD);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_USERNAME) &&
            verifier.VerifyString(username()) &&
+           VerifyOffset(verifier, VT_PASSWORD) &&
+           verifier.VerifyString(password()) &&
            verifier.EndTable();
   }
 };
@@ -126,6 +267,9 @@ struct LoginBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_username(::flatbuffers::Offset<::flatbuffers::String> username) {
     fbb_.AddOffset(Login::VT_USERNAME, username);
+  }
+  void add_password(::flatbuffers::Offset<::flatbuffers::String> password) {
+    fbb_.AddOffset(Login::VT_PASSWORD, password);
   }
   explicit LoginBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -140,19 +284,577 @@ struct LoginBuilder {
 
 inline ::flatbuffers::Offset<Login> CreateLogin(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> username = 0) {
+    ::flatbuffers::Offset<::flatbuffers::String> username = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> password = 0) {
   LoginBuilder builder_(_fbb);
+  builder_.add_password(password);
   builder_.add_username(username);
   return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<Login> CreateLoginDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *username = nullptr) {
+    const char *username = nullptr,
+    const char *password = nullptr) {
   auto username__ = username ? _fbb.CreateString(username) : 0;
+  auto password__ = password ? _fbb.CreateString(password) : 0;
   return MMO::Network::CreateLogin(
       _fbb,
-      username__);
+      username__,
+      password__);
+}
+
+struct LoginResult FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LoginResultBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SUCCESS = 4,
+    VT_ACCOUNT_ID = 6,
+    VT_MESSAGE = 8
+  };
+  bool success() const {
+    return GetField<uint8_t>(VT_SUCCESS, 0) != 0;
+  }
+  int32_t account_id() const {
+    return GetField<int32_t>(VT_ACCOUNT_ID, 0);
+  }
+  const ::flatbuffers::String *message() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_MESSAGE);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_SUCCESS, 1) &&
+           VerifyField<int32_t>(verifier, VT_ACCOUNT_ID, 4) &&
+           VerifyOffset(verifier, VT_MESSAGE) &&
+           verifier.VerifyString(message()) &&
+           verifier.EndTable();
+  }
+};
+
+struct LoginResultBuilder {
+  typedef LoginResult Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_success(bool success) {
+    fbb_.AddElement<uint8_t>(LoginResult::VT_SUCCESS, static_cast<uint8_t>(success), 0);
+  }
+  void add_account_id(int32_t account_id) {
+    fbb_.AddElement<int32_t>(LoginResult::VT_ACCOUNT_ID, account_id, 0);
+  }
+  void add_message(::flatbuffers::Offset<::flatbuffers::String> message) {
+    fbb_.AddOffset(LoginResult::VT_MESSAGE, message);
+  }
+  explicit LoginResultBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LoginResult> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LoginResult>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LoginResult> CreateLoginResult(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool success = false,
+    int32_t account_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> message = 0) {
+  LoginResultBuilder builder_(_fbb);
+  builder_.add_message(message);
+  builder_.add_account_id(account_id);
+  builder_.add_success(success);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<LoginResult> CreateLoginResultDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool success = false,
+    int32_t account_id = 0,
+    const char *message = nullptr) {
+  auto message__ = message ? _fbb.CreateString(message) : 0;
+  return MMO::Network::CreateLoginResult(
+      _fbb,
+      success,
+      account_id,
+      message__);
+}
+
+struct PlayerData FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerDataBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ACCOUNT_ID = 4,
+    VT_USERNAME = 6,
+    VT_POS_X = 8,
+    VT_POS_Y = 10,
+    VT_FOOD = 12,
+    VT_WOOD = 14,
+    VT_STONE = 16,
+    VT_GOLD = 18
+  };
+  int32_t account_id() const {
+    return GetField<int32_t>(VT_ACCOUNT_ID, 0);
+  }
+  const ::flatbuffers::String *username() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_USERNAME);
+  }
+  float pos_x() const {
+    return GetField<float>(VT_POS_X, 0.0f);
+  }
+  float pos_y() const {
+    return GetField<float>(VT_POS_Y, 0.0f);
+  }
+  int32_t food() const {
+    return GetField<int32_t>(VT_FOOD, 0);
+  }
+  int32_t wood() const {
+    return GetField<int32_t>(VT_WOOD, 0);
+  }
+  int32_t stone() const {
+    return GetField<int32_t>(VT_STONE, 0);
+  }
+  int32_t gold() const {
+    return GetField<int32_t>(VT_GOLD, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ACCOUNT_ID, 4) &&
+           VerifyOffset(verifier, VT_USERNAME) &&
+           verifier.VerifyString(username()) &&
+           VerifyField<float>(verifier, VT_POS_X, 4) &&
+           VerifyField<float>(verifier, VT_POS_Y, 4) &&
+           VerifyField<int32_t>(verifier, VT_FOOD, 4) &&
+           VerifyField<int32_t>(verifier, VT_WOOD, 4) &&
+           VerifyField<int32_t>(verifier, VT_STONE, 4) &&
+           VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerDataBuilder {
+  typedef PlayerData Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_account_id(int32_t account_id) {
+    fbb_.AddElement<int32_t>(PlayerData::VT_ACCOUNT_ID, account_id, 0);
+  }
+  void add_username(::flatbuffers::Offset<::flatbuffers::String> username) {
+    fbb_.AddOffset(PlayerData::VT_USERNAME, username);
+  }
+  void add_pos_x(float pos_x) {
+    fbb_.AddElement<float>(PlayerData::VT_POS_X, pos_x, 0.0f);
+  }
+  void add_pos_y(float pos_y) {
+    fbb_.AddElement<float>(PlayerData::VT_POS_Y, pos_y, 0.0f);
+  }
+  void add_food(int32_t food) {
+    fbb_.AddElement<int32_t>(PlayerData::VT_FOOD, food, 0);
+  }
+  void add_wood(int32_t wood) {
+    fbb_.AddElement<int32_t>(PlayerData::VT_WOOD, wood, 0);
+  }
+  void add_stone(int32_t stone) {
+    fbb_.AddElement<int32_t>(PlayerData::VT_STONE, stone, 0);
+  }
+  void add_gold(int32_t gold) {
+    fbb_.AddElement<int32_t>(PlayerData::VT_GOLD, gold, 0);
+  }
+  explicit PlayerDataBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerData> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerData>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerData> CreatePlayerData(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t account_id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> username = 0,
+    float pos_x = 0.0f,
+    float pos_y = 0.0f,
+    int32_t food = 0,
+    int32_t wood = 0,
+    int32_t stone = 0,
+    int32_t gold = 0) {
+  PlayerDataBuilder builder_(_fbb);
+  builder_.add_gold(gold);
+  builder_.add_stone(stone);
+  builder_.add_wood(wood);
+  builder_.add_food(food);
+  builder_.add_pos_y(pos_y);
+  builder_.add_pos_x(pos_x);
+  builder_.add_username(username);
+  builder_.add_account_id(account_id);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<PlayerData> CreatePlayerDataDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t account_id = 0,
+    const char *username = nullptr,
+    float pos_x = 0.0f,
+    float pos_y = 0.0f,
+    int32_t food = 0,
+    int32_t wood = 0,
+    int32_t stone = 0,
+    int32_t gold = 0) {
+  auto username__ = username ? _fbb.CreateString(username) : 0;
+  return MMO::Network::CreatePlayerData(
+      _fbb,
+      account_id,
+      username__,
+      pos_x,
+      pos_y,
+      food,
+      wood,
+      stone,
+      gold);
+}
+
+struct ModifyResources FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ModifyResourcesBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESOURCE_TYPE = 4,
+    VT_DELTA = 6
+  };
+  MMO::Network::ResourceType resource_type() const {
+    return static_cast<MMO::Network::ResourceType>(GetField<uint8_t>(VT_RESOURCE_TYPE, 0));
+  }
+  int32_t delta() const {
+    return GetField<int32_t>(VT_DELTA, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_RESOURCE_TYPE, 1) &&
+           VerifyField<int32_t>(verifier, VT_DELTA, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ModifyResourcesBuilder {
+  typedef ModifyResources Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_resource_type(MMO::Network::ResourceType resource_type) {
+    fbb_.AddElement<uint8_t>(ModifyResources::VT_RESOURCE_TYPE, static_cast<uint8_t>(resource_type), 0);
+  }
+  void add_delta(int32_t delta) {
+    fbb_.AddElement<int32_t>(ModifyResources::VT_DELTA, delta, 0);
+  }
+  explicit ModifyResourcesBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ModifyResources> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ModifyResources>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ModifyResources> CreateModifyResources(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    MMO::Network::ResourceType resource_type = MMO::Network::ResourceType_Food,
+    int32_t delta = 0) {
+  ModifyResourcesBuilder builder_(_fbb);
+  builder_.add_delta(delta);
+  builder_.add_resource_type(resource_type);
+  return builder_.Finish();
+}
+
+struct ResourceUpdate FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ResourceUpdateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_FOOD = 4,
+    VT_WOOD = 6,
+    VT_STONE = 8,
+    VT_GOLD = 10
+  };
+  int32_t food() const {
+    return GetField<int32_t>(VT_FOOD, 0);
+  }
+  int32_t wood() const {
+    return GetField<int32_t>(VT_WOOD, 0);
+  }
+  int32_t stone() const {
+    return GetField<int32_t>(VT_STONE, 0);
+  }
+  int32_t gold() const {
+    return GetField<int32_t>(VT_GOLD, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_FOOD, 4) &&
+           VerifyField<int32_t>(verifier, VT_WOOD, 4) &&
+           VerifyField<int32_t>(verifier, VT_STONE, 4) &&
+           VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ResourceUpdateBuilder {
+  typedef ResourceUpdate Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_food(int32_t food) {
+    fbb_.AddElement<int32_t>(ResourceUpdate::VT_FOOD, food, 0);
+  }
+  void add_wood(int32_t wood) {
+    fbb_.AddElement<int32_t>(ResourceUpdate::VT_WOOD, wood, 0);
+  }
+  void add_stone(int32_t stone) {
+    fbb_.AddElement<int32_t>(ResourceUpdate::VT_STONE, stone, 0);
+  }
+  void add_gold(int32_t gold) {
+    fbb_.AddElement<int32_t>(ResourceUpdate::VT_GOLD, gold, 0);
+  }
+  explicit ResourceUpdateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ResourceUpdate> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ResourceUpdate>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ResourceUpdate> CreateResourceUpdate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t food = 0,
+    int32_t wood = 0,
+    int32_t stone = 0,
+    int32_t gold = 0) {
+  ResourceUpdateBuilder builder_(_fbb);
+  builder_.add_gold(gold);
+  builder_.add_stone(stone);
+  builder_.add_wood(wood);
+  builder_.add_food(food);
+  return builder_.Finish();
+}
+
+struct KingdomEntry FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef KingdomEntryBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_NAME = 6,
+    VT_PLAYER_COUNT = 8,
+    VT_MAX_PLAYERS = 10,
+    VT_STATUS = 12
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const ::flatbuffers::String *name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
+  }
+  int32_t player_count() const {
+    return GetField<int32_t>(VT_PLAYER_COUNT, 0);
+  }
+  int32_t max_players() const {
+    return GetField<int32_t>(VT_MAX_PLAYERS, 0);
+  }
+  uint8_t status() const {
+    return GetField<uint8_t>(VT_STATUS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<int32_t>(verifier, VT_PLAYER_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAX_PLAYERS, 4) &&
+           VerifyField<uint8_t>(verifier, VT_STATUS, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct KingdomEntryBuilder {
+  typedef KingdomEntry Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(KingdomEntry::VT_ID, id, 0);
+  }
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name) {
+    fbb_.AddOffset(KingdomEntry::VT_NAME, name);
+  }
+  void add_player_count(int32_t player_count) {
+    fbb_.AddElement<int32_t>(KingdomEntry::VT_PLAYER_COUNT, player_count, 0);
+  }
+  void add_max_players(int32_t max_players) {
+    fbb_.AddElement<int32_t>(KingdomEntry::VT_MAX_PLAYERS, max_players, 0);
+  }
+  void add_status(uint8_t status) {
+    fbb_.AddElement<uint8_t>(KingdomEntry::VT_STATUS, status, 0);
+  }
+  explicit KingdomEntryBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<KingdomEntry> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<KingdomEntry>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<KingdomEntry> CreateKingdomEntry(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+    int32_t player_count = 0,
+    int32_t max_players = 0,
+    uint8_t status = 0) {
+  KingdomEntryBuilder builder_(_fbb);
+  builder_.add_max_players(max_players);
+  builder_.add_player_count(player_count);
+  builder_.add_name(name);
+  builder_.add_id(id);
+  builder_.add_status(status);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<KingdomEntry> CreateKingdomEntryDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    const char *name = nullptr,
+    int32_t player_count = 0,
+    int32_t max_players = 0,
+    uint8_t status = 0) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return MMO::Network::CreateKingdomEntry(
+      _fbb,
+      id,
+      name__,
+      player_count,
+      max_players,
+      status);
+}
+
+struct KingdomList FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef KingdomListBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KINGDOMS = 4
+  };
+  const ::flatbuffers::Vector<::flatbuffers::Offset<MMO::Network::KingdomEntry>> *kingdoms() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<MMO::Network::KingdomEntry>> *>(VT_KINGDOMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KINGDOMS) &&
+           verifier.VerifyVector(kingdoms()) &&
+           verifier.VerifyVectorOfTables(kingdoms()) &&
+           verifier.EndTable();
+  }
+};
+
+struct KingdomListBuilder {
+  typedef KingdomList Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_kingdoms(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<MMO::Network::KingdomEntry>>> kingdoms) {
+    fbb_.AddOffset(KingdomList::VT_KINGDOMS, kingdoms);
+  }
+  explicit KingdomListBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<KingdomList> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<KingdomList>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<KingdomList> CreateKingdomList(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<MMO::Network::KingdomEntry>>> kingdoms = 0) {
+  KingdomListBuilder builder_(_fbb);
+  builder_.add_kingdoms(kingdoms);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<KingdomList> CreateKingdomListDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<::flatbuffers::Offset<MMO::Network::KingdomEntry>> *kingdoms = nullptr) {
+  auto kingdoms__ = kingdoms ? _fbb.CreateVector<::flatbuffers::Offset<MMO::Network::KingdomEntry>>(*kingdoms) : 0;
+  return MMO::Network::CreateKingdomList(
+      _fbb,
+      kingdoms__);
+}
+
+struct SelectKingdom FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SelectKingdomBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KINGDOM_ID = 4
+  };
+  int32_t kingdom_id() const {
+    return GetField<int32_t>(VT_KINGDOM_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_KINGDOM_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct SelectKingdomBuilder {
+  typedef SelectKingdom Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_kingdom_id(int32_t kingdom_id) {
+    fbb_.AddElement<int32_t>(SelectKingdom::VT_KINGDOM_ID, kingdom_id, 0);
+  }
+  explicit SelectKingdomBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SelectKingdom> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SelectKingdom>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SelectKingdom> CreateSelectKingdom(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t kingdom_id = 0) {
+  SelectKingdomBuilder builder_(_fbb);
+  builder_.add_kingdom_id(kingdom_id);
+  return builder_.Finish();
+}
+
+struct RequestKingdoms FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RequestKingdomsBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RequestKingdomsBuilder {
+  typedef RequestKingdoms Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit RequestKingdomsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RequestKingdoms> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RequestKingdoms>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RequestKingdoms> CreateRequestKingdoms(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  RequestKingdomsBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 struct Envelope FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

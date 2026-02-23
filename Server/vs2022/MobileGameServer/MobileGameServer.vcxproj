@@ -42,7 +42,7 @@
     <TargetName>MobileGameServer</TargetName>
     <TargetExt>.exe</TargetExt>
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>C:\Users\PIERRE\AppData\Local\.xmake\packages\e\entt\v3.16.0\9da180384ab84972909abd8955478e05\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\0c6cd7a893f2461c87be89748dbf6ec1\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\4b7192b5275a446cacb39cc3902f1437\include;;;</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\PIERRE\AppData\Local\.xmake\packages\e\entt\v3.16.0\9da180384ab84972909abd8955478e05\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\include;;;</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <OutDir>..\..\build\windows\x64\release\</OutDir>
@@ -50,20 +50,20 @@
     <TargetName>MobileGameServer</TargetName>
     <TargetExt>.exe</TargetExt>
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>C:\Users\PIERRE\AppData\Local\.xmake\packages\e\entt\v3.16.0\9da180384ab84972909abd8955478e05\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\341fa33883b346c8b1441423e4e8ad39\include;;;</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\PIERRE\AppData\Local\.xmake\packages\e\entt\v3.16.0\9da180384ab84972909abd8955478e05\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\include;C:\Users\PIERRE\AppData\Local\.xmake\packages\l\libsodium\1.0.20\8713ee1c2011463dac138dafefbccf65\include;;;</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'" Label="Debugger">
     <LocalDebuggerWorkingDirectory>..\..\build\windows\x64\debug</LocalDebuggerWorkingDirectory>
-    <LocalDebuggerEnvironment>PATH=C:\Users\PIERRE\AppData\Local\.xmake\packages\n\ninja\v1.13.1\fd5a0995dca64146a4f4c4dbff879aad\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\c\cmake\4.0.3\5249d11949644178abe2f58a6ffb0624\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\0c6cd7a893f2461c87be89748dbf6ec1\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\0c6cd7a893f2461c87be89748dbf6ec1\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\4b7192b5275a446cacb39cc3902f1437\lib;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64;C:\Program Files (x86)\Windows Kits\10\bin\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools;C:\Users\PIERRE\AppData\Local\Programs\Opera GX;D:\Meta Horizon\Support\oculus-runtime;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Users\PIERRE\AppData\Local\Microsoft\WindowsApps;C:\Users\PIERRE\AppData\Local\gitkraken\bin;C:\Apps\Microsoft VS Code\bin;C:\Users\PIERRE\AppData\Roaming\npm;C:\Users\PIERRE\AppData\Local\GitHubDesktop\bin;C:\Apps\JetBrains Rider 2024.2.4\bin;C:\Users\PIERRE\.dotnet\tools;C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8\bin;C:\Program Files\xmake;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Program Files\nodejs;C:\Users\PIERRE\AppData\Local\Programs\Python\Python312\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python312;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313;C:\Users\PIERRE\AppData\Local\Programs\Python\Launcher;C:\Program Files (x86)\Java\jdk-17.0.16.8\bin;C:\Users\PIERRE\.aftman\bin;C:\Users\PIERRE\AppData\Local\Programs\Antigravity\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\vcpkg;$([System.Environment]::GetEnvironmentVariable('PATH'));%(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=C:\Users\PIERRE\AppData\Local\.xmake\packages\n\ninja\v1.13.1\fd5a0995dca64146a4f4c4dbff879aad\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\c\cmake\4.0.3\5249d11949644178abe2f58a6ffb0624\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\lib;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64;C:\Program Files (x86)\Windows Kits\10\bin\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools;C:\Users\PIERRE\.dotnet;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Users\PIERRE\AppData\Local\Microsoft\WindowsApps;C:\Users\PIERRE\AppData\Local\gitkraken\bin;C:\Apps\Microsoft VS Code\bin;C:\Users\PIERRE\AppData\Roaming\npm;C:\Users\PIERRE\AppData\Local\GitHubDesktop\bin;C:\Apps\JetBrains Rider 2024.2.4\bin;C:\Users\PIERRE\.dotnet\tools;C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8\bin;C:\Program Files\xmake;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313;C:\Users\PIERRE\AppData\Local\Programs\Python\Launcher;C:\Program Files (x86)\Java\jdk-17.0.16.8\bin;C:\Users\PIERRE\.aftman\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\vcpkg;$([System.Environment]::GetEnvironmentVariable('PATH'));%(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'" Label="Debugger">
     <LocalDebuggerWorkingDirectory>..\..\build\windows\x64\release</LocalDebuggerWorkingDirectory>
-    <LocalDebuggerEnvironment>PATH=C:\Users\PIERRE\AppData\Local\.xmake\packages\n\ninja\v1.13.1\fd5a0995dca64146a4f4c4dbff879aad\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\c\cmake\4.0.3\5249d11949644178abe2f58a6ffb0624\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\341fa33883b346c8b1441423e4e8ad39\lib;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64;C:\Program Files (x86)\Windows Kits\10\bin\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools;C:\Users\PIERRE\AppData\Local\Programs\Opera GX;D:\Meta Horizon\Support\oculus-runtime;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Users\PIERRE\AppData\Local\Microsoft\WindowsApps;C:\Users\PIERRE\AppData\Local\gitkraken\bin;C:\Apps\Microsoft VS Code\bin;C:\Users\PIERRE\AppData\Roaming\npm;C:\Users\PIERRE\AppData\Local\GitHubDesktop\bin;C:\Apps\JetBrains Rider 2024.2.4\bin;C:\Users\PIERRE\.dotnet\tools;C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8\bin;C:\Program Files\xmake;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Program Files\nodejs;C:\Users\PIERRE\AppData\Local\Programs\Python\Python312\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python312;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313;C:\Users\PIERRE\AppData\Local\Programs\Python\Launcher;C:\Program Files (x86)\Java\jdk-17.0.16.8\bin;C:\Users\PIERRE\.aftman\bin;C:\Users\PIERRE\AppData\Local\Programs\Antigravity\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\vcpkg;$([System.Environment]::GetEnvironmentVariable('PATH'));%(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
+    <LocalDebuggerEnvironment>PATH=C:\Users\PIERRE\AppData\Local\.xmake\packages\n\ninja\v1.13.1\fd5a0995dca64146a4f4c4dbff879aad\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\c\cmake\4.0.3\5249d11949644178abe2f58a6ffb0624\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\l\libsodium\1.0.20\8713ee1c2011463dac138dafefbccf65\bin;C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\l\libsodium\1.0.20\8713ee1c2011463dac138dafefbccf65\lib;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64;C:\Program Files (x86)\Windows Kits\10\bin\x64;C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools;C:\Users\PIERRE\.dotnet;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Users\PIERRE\AppData\Local\Microsoft\WindowsApps;C:\Users\PIERRE\AppData\Local\gitkraken\bin;C:\Apps\Microsoft VS Code\bin;C:\Users\PIERRE\AppData\Roaming\npm;C:\Users\PIERRE\AppData\Local\GitHubDesktop\bin;C:\Apps\JetBrains Rider 2024.2.4\bin;C:\Users\PIERRE\.dotnet\tools;C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8\bin;C:\Program Files\xmake;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313\Scripts;C:\Users\PIERRE\AppData\Local\Programs\Python\Python313;C:\Users\PIERRE\AppData\Local\Programs\Python\Launcher;C:\Program Files (x86)\Java\jdk-17.0.16.8\bin;C:\Users\PIERRE\.aftman\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Community\VC\vcpkg;$([System.Environment]::GetEnvironmentVariable('PATH'));%(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|x64'">
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\0c6cd7a893f2461c87be89748dbf6ec1\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\4b7192b5275a446cacb39cc3902f1437\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>flatbuffers.lib;enet.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>flatbuffers.lib;sqlite3.lib;SQLiteCpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>-dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
       <Profile>false</Profile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -75,25 +75,26 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
-      <PreprocessorDefinitions>DEBUG_MODE;__config_debug__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5287;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NOMINMAX;DEBUG_MODE;__config_debug__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated;..\..\vendor\enet-csharp</AdditionalIncludeDirectories>
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalOptions>-FS %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>DEBUG_MODE;__config_debug__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;DEBUG_MODE;__config_debug__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated;..\..\vendor\enet-csharp</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|x64'">
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\e\enet\v1.3.18\341fa33883b346c8b1441423e4e8ad39\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>flatbuffers.lib;enet.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\PIERRE\AppData\Local\.xmake\packages\f\flatbuffers\v25.9.23\335c94d754b44587b78051e2e88ecae0\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\s\sqlitecpp\3.3.3\33c7042408f04a3ab8ca7543f3216206\lib;C:\Users\PIERRE\AppData\Local\.xmake\packages\l\libsodium\1.0.20\8713ee1c2011463dac138dafefbccf65\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>flatbuffers.lib;sqlite3.lib;SQLiteCpp.lib;sodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>-dynamicbase -nxcompat /opt:ref /opt:icf %(AdditionalOptions)</AdditionalOptions>
       <Profile>false</Profile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -105,38 +106,84 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
-      <PreprocessorDefinitions>NDEBUG;__config_release__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>5287;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NOMINMAX;SODIUM_STATIC;NDEBUG;__config_release__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DebugInformationFormat>None</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated;..\..\vendor\enet-csharp</AdditionalIncludeDirectories>
       <ExceptionHandling>Sync</ExceptionHandling>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;__config_release__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;SODIUM_STATIC;NDEBUG;__config_release__;__config_x64__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\src;..\..\src\public;..\..\src\private;..\..\proto\generated;..\..\vendor\enet-csharp</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\src\private\core\GameLoop.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\database\DatabaseManager.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\database\repositories\SqliteAccountRepository.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\Handlers.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="..\..\src\private\network\NetworkManager.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\PacketDispatcher.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\SessionManager.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\handlers\LoginHandler.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\src\private\network\handlers\PingHandler.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='debug|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='release|x64'">-std:c++20 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="..\..\vendor\enet-csharp\enet.c">
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\public\core\Config.h" />
     <ClInclude Include="..\..\src\public\core\GameLoop.h" />
     <ClInclude Include="..\..\src\public\core\Types.h" />
+    <ClInclude Include="..\..\src\public\database\ConcurrentQueue.h" />
+    <ClInclude Include="..\..\src\public\database\DatabaseManager.h" />
+    <ClInclude Include="..\..\src\public\database\repositories\IAccountRepository.h" />
+    <ClInclude Include="..\..\src\public\database\repositories\SqliteAccountRepository.h" />
     <ClInclude Include="..\..\src\public\math\Random.h" />
     <ClInclude Include="..\..\src\public\math\Vector2.h" />
+    <ClInclude Include="..\..\src\public\network\Handlers.h" />
     <ClInclude Include="..\..\src\public\network\NetworkManager.h" />
+    <ClInclude Include="..\..\src\public\network\PacketBuilder.h" />
     <ClInclude Include="..\..\src\public\network\PacketDispatcher.h" />
+    <ClInclude Include="..\..\src\public\network\SessionManager.h" />
+    <ClInclude Include="..\..\src\public\network\handlers\LoginHandler.h" />
+    <ClInclude Include="..\..\src\public\network\handlers\PingHandler.h" />
     <ClInclude Include="..\..\src\public\utils\Logger.h" />
-    <ClInclude Include="..\..\src\public\utils\ThreadPool.h" />
+    <ClInclude Include="..\..\src\public\utils\PasswordHasher.h" />
     <ClInclude Include="..\..\src\public\utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
