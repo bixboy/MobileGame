@@ -278,12 +278,10 @@ Server/proto/
 
 ================================
 ## 🔌 Créer un nouveau Handler
-================================
 
 Un handler est une fonction qui traite un opcode spécifique. Voici comment en créer un
 de A à Z (exemple : `C2S_BuildRequest`).
 
-==============================
 ### Étape 1 — Créer le header
 ==============================
 

@@ -8,6 +8,16 @@ public class ResourceUI : MonoBehaviour
     [Header("Network")]
     public NetworkClient networkClient;
 
+    [Header("General")]
+    public Button logoutButton;
+
+    [Header("Account Binding")]
+    public TMP_InputField bindUsernameInput;
+    public TMP_InputField bindPasswordInput;
+    public Button bindSubmitButton;
+    public Button bindGoogleButton;
+    public FirebaseManager firebaseManager;
+
     [Header("Food")]
     public TextMeshProUGUI foodText;
     public Button foodAddButton;
@@ -60,6 +70,35 @@ public class ResourceUI : MonoBehaviour
         
         if (goldRemoveButton)
             goldRemoveButton.onClick.AddListener(() => SendModify("gold", -modifyAmount));
+            
+        // Bouton deconnexion
+        if (logoutButton)
+            logoutButton.onClick.AddListener(() => { if (networkClient) networkClient.DisconnectAndClearSession(); });
+
+        // Bouton de liaison de compte classique
+        if (bindSubmitButton)
+        {
+            bindSubmitButton.onClick.AddListener(() =>
+            {
+                if (networkClient && bindUsernameInput && bindPasswordInput)
+                {
+                    string user = bindUsernameInput.text;
+                    string pass = bindPasswordInput.text;
+                    networkClient.SendBindAccount(user, pass);
+                }
+            });
+        }
+
+        if (bindGoogleButton != null)
+        {
+            bindGoogleButton.onClick.AddListener(() =>
+            {
+                if (firebaseManager != null)
+                {
+                    firebaseManager.RequestBind();
+                }
+            });
+        }
 
         gameObject.SetActive(false);
     }

@@ -32,6 +32,21 @@ public class NetworkClient : MonoBehaviour
     private string _currentPassword;
     private int _accountId;
 
+    public bool IsConnectedAsGuest()
+    {
+        // Pour l'instant, on considère que si on est connecté (InKingdom ou Connected)
+        // et qu'on a un accountId mais qu'on a utilisé le flow Guest, c'est un invité.
+        return ConnectionState != ClientConnectionState.Disconnected && _currentAuthMode == AuthMode.Guest;
+    }
+    
+    // Auth Method Tracking
+    private enum AuthMode { None, Classic, Guest, Reconnect, Social }
+    private AuthMode _currentAuthMode = AuthMode.None;
+
+    private string _socialProvider;
+    private string _socialId;
+    private string _socialIdToken;
+
     private void Start()
     {
         if (kingdomUI)
@@ -43,6 +58,70 @@ public class NetworkClient : MonoBehaviour
 
     public void ConnectAndLogin(string username, string password)
     {
+        _currentUsername = username;
+        _currentPassword = password;
+        _currentAuthMode = AuthMode.Classic;
+        StartConnection();
+    }
+
+    public void ConnectAsGuest()
+    {
+        _currentAuthMode = AuthMode.Guest;
+        StartConnection();
+    }
+
+    public void TryAutoReconnect()
+    {
+        if (PlayerPrefs.HasKey("SessionToken") && PlayerPrefs.HasKey("AccountId"))
+        {
+            _currentAuthMode = AuthMode.Reconnect;
+            StartConnection();
+        }
+        else
+        {
+            // Fallback to normal login UI
+            if (loginUI) loginUI.gameObject.SetActive(true);
+        }
+    }
+
+    public void ConnectWithSocialLogin(string provider, string socialId, string idToken)
+    {
+        _socialProvider = provider;
+        _socialId = socialId;
+        _socialIdToken = idToken;
+        _currentAuthMode = AuthMode.Social;
+        StartConnection();
+    }
+
+    public void DisconnectAndClearSession()
+    {
+        // Supprime le token de session
+        PlayerPrefs.DeleteKey("SessionToken");
+        PlayerPrefs.DeleteKey("AccountId");
+        PlayerPrefs.Save();
+
+        // Deconnecte le pair ENet
+        if (client != null && peer.IsSet)
+        {
+            peer.Disconnect(0);
+            client.Flush();
+        }
+
+        // Cache les UI du jeu et reaffiche le login
+        if (resourceUI) resourceUI.Hide();
+        if (kingdomUI) kingdomUI.Hide();
+        if (loginUI)
+        {
+            loginUI.gameObject.SetActive(true);
+            loginUI.SetLoginResult(false, "Deconnecte avec succes.");
+        }
+
+        ConnectionState = ClientConnectionState.Disconnected;
+        Debug.Log("<color=red>Deconnecte et session effacee.</color>");
+    }
+
+    private void StartConnection()
+    {
         if (!Library.Initialize())
         {
             Debug.LogError("Erreur d'initialisation ENet.");
@@ -50,7 +129,12 @@ public class NetworkClient : MonoBehaviour
         }
 
         if (client != null)
+        {
+            if (peer.IsSet) peer.DisconnectNow(0);
+            client.Flush();
             client.Dispose();
+            client = null;
+        }
         
         client = new Host();
         Address address = new Address();
@@ -59,10 +143,7 @@ public class NetworkClient : MonoBehaviour
 
         client.Create();
 
-        _currentUsername = username;
-        _currentPassword = password;
-
-        Debug.Log($"Connexion au serveur {serverIP}:{serverPort}...");
+        Debug.Log($"Connexion au serveur {serverIP}:{serverPort} (Mode: {_currentAuthMode})...");
         peer = client.Connect(address, 2);
     }
 
@@ -123,8 +204,23 @@ public class NetworkClient : MonoBehaviour
         InvokeRepeating(nameof(SendPing), 1f, 5f);
 
         ConnectionState = ClientConnectionState.Connected;
-        Debug.Log("<color=green>Connecte au serveur ! Envoi du Login...</color>");
-        SendLogin(_currentUsername, _currentPassword);
+        Debug.Log("<color=green>Connecte au serveur ! Envoi de la requete d'auth...</color>");
+
+        switch (_currentAuthMode)
+        {
+            case AuthMode.Classic:
+                SendLogin(_currentUsername, _currentPassword);
+                break;
+            case AuthMode.Guest:
+                SendGuestLogin();
+                break;
+            case AuthMode.Reconnect:
+                SendReconnect();
+                break;
+            case AuthMode.Social:
+                SendSocialLogin(_socialProvider, _socialId, _socialIdToken);
+                break;
+        }
     }
 
     private void OnDisconnected()
@@ -173,6 +269,14 @@ public class NetworkClient : MonoBehaviour
                 HandlePong(envelope.GetPayloadDataArray());
                 break;
 
+            case Opcode.S2C_BindAccountResult:
+                HandleBindAccountResult(envelope.GetPayloadDataArray());
+                break;
+
+            case Opcode.S2C_BindSocialAccountResult:
+                HandleBindSocialAccountResult(envelope.GetPayloadDataArray());
+                break;
+
             default:
                 break;
         }
@@ -181,13 +285,30 @@ public class NetworkClient : MonoBehaviour
     private void HandleLoginResult(byte[] payload)
     {
         LoginResult result = LoginResult.GetRootAsLoginResult(new ByteBuffer(payload));
-        if (loginUI)
-            loginUI.SetLoginResult(result.Success, result.Message);
-
-        if (result.Success)
+        
+        if (!result.Success)
+        {
+            Debug.LogError($"Login failed: {result.Message}");
+            ConnectionState = ClientConnectionState.Disconnected;
+            _accountId = -1;
+            
+            PlayerPrefs.DeleteKey("SessionToken");
+            PlayerPrefs.DeleteKey("AccountId");
+            
+            if (loginUI) loginUI.SetLoginResult(false, result.Message);
+        }
+        else
         {
             _accountId = result.AccountId;
-            Debug.Log($"<color=cyan>Login OK. Demande liste royaumes...</color>");
+            string token = result.SessionToken;
+            
+            PlayerPrefs.SetString("SessionToken", token);
+            PlayerPrefs.SetInt("AccountId", _accountId);
+            PlayerPrefs.Save();
+
+            if (loginUI) loginUI.SetLoginResult(true, result.Message);
+
+            Debug.Log($"<color=cyan>Login OK (ID: {_accountId}). Demande liste royaumes...</color>");
             
             // Demander la liste des royaumes (meme connexion)
             var builder = new FlatBufferBuilder(16);
@@ -197,6 +318,38 @@ public class NetworkClient : MonoBehaviour
             builder.Finish(req.Value);
             
             SendEnvelope(Opcode.C2S_RequestKingdoms, builder.SizedByteArray());
+        }
+    }
+
+    private void HandleBindAccountResult(byte[] payload)
+    {
+        BindAccountResult result = BindAccountResult.GetRootAsBindAccountResult(new ByteBuffer(payload));
+        
+        if (result.Success)
+        {
+            Debug.Log($"<color=green>Liaison de compte reussie ! Message : {result.Message}</color>");
+            // TODO: Mettre a jour l'UI correspondante (ex: cacher le panel Link Account)
+        }
+        else
+        {
+            Debug.LogError($"Echec de la liaison de compte : {result.Message}");
+            // TODO: Afficher l'erreur dans l'UI
+        }
+    }
+
+    private void HandleBindSocialAccountResult(byte[] payload)
+    {
+        BindSocialAccountResult result = BindSocialAccountResult.GetRootAsBindSocialAccountResult(new ByteBuffer(payload));
+        
+        if (result.Success)
+        {
+            Debug.Log($"<color=green>Liaison de compte Social reussie ! Message : {result.Message}</color>");
+            // TODO: Mettre a jour l'UI correspondante (ex: fermer le popup de liaison)
+        }
+        else
+        {
+            Debug.LogError($"Echec de la liaison Social : {result.Message}");
+            // TODO: Afficher l'erreur dans l'UI
         }
     }
 
@@ -261,6 +414,41 @@ public class NetworkClient : MonoBehaviour
         SendEnvelope(Opcode.C2S_Login, builder.SizedByteArray());
     }
 
+    private void SendGuestLogin()
+    {
+        string deviceId = SystemInfo.deviceUniqueIdentifier;
+        if (string.IsNullOrEmpty(deviceId))
+            deviceId = "UNKNOWN_DEVICE_" + UnityEngine.Random.Range(1000, 9999);
+
+        var builder = new FlatBufferBuilder(64);
+        var idOffset = builder.CreateString(deviceId);
+        GuestLogin.StartGuestLogin(builder);
+        GuestLogin.AddDeviceId(builder, idOffset);
+        builder.Finish(GuestLogin.EndGuestLogin(builder).Value);
+        SendEnvelope(Opcode.C2S_GuestLogin, builder.SizedByteArray());
+    }
+
+    private void SendReconnect()
+    {
+        int savedId = PlayerPrefs.GetInt("AccountId", -1);
+        string savedToken = PlayerPrefs.GetString("SessionToken", "");
+
+        if (savedId == -1 || string.IsNullOrEmpty(savedToken))
+        {
+            Debug.LogWarning("Impossible d'auto-reconnect : données manquantes.");
+            if (loginUI) loginUI.gameObject.SetActive(true);
+            return;
+        }
+
+        var builder = new FlatBufferBuilder(64);
+        var tokenOffset = builder.CreateString(savedToken);
+        Reconnect.StartReconnect(builder);
+        Reconnect.AddAccountId(builder, savedId);
+        Reconnect.AddSessionToken(builder, tokenOffset);
+        builder.Finish(Reconnect.EndReconnect(builder).Value);
+        SendEnvelope(Opcode.C2S_Reconnect, builder.SizedByteArray());
+    }
+
     private void SendPing()
     {
         var builder = new FlatBufferBuilder(16);
@@ -268,6 +456,58 @@ public class NetworkClient : MonoBehaviour
         MMO.Network.Ping.AddTimestamp(builder, System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
         builder.Finish(MMO.Network.Ping.EndPing(builder).Value);
         SendEnvelope(Opcode.C2S_Ping, builder.SizedByteArray());
+    }
+
+    public void SendBindAccount(string username, string password)
+    {
+        if (ConnectionState == ClientConnectionState.Disconnected) return;
+
+        var builder = new FlatBufferBuilder(64);
+        var userOffset = builder.CreateString(username);
+        var passOffset = builder.CreateString(password);
+        
+        BindAccount.StartBindAccount(builder);
+        BindAccount.AddUsername(builder, userOffset);
+        BindAccount.AddPassword(builder, passOffset);
+        builder.Finish(BindAccount.EndBindAccount(builder).Value);
+        
+        SendEnvelope(Opcode.C2S_BindAccount, builder.SizedByteArray());
+    }
+
+    public void SendBindSocialAccount(string authProvider, string providerId, string idToken = "")
+    {
+        if (ConnectionState == ClientConnectionState.Disconnected) return;
+
+        var builder = new FlatBufferBuilder(64);
+        var providerOffset = builder.CreateString(authProvider);
+        var providerIdOffset = builder.CreateString(providerId);
+        var idTokenOffset = builder.CreateString(idToken);
+        
+        BindSocialAccount.StartBindSocialAccount(builder);
+        BindSocialAccount.AddAuthProvider(builder, providerOffset);
+        BindSocialAccount.AddProviderId(builder, providerIdOffset);
+        BindSocialAccount.AddIdToken(builder, idTokenOffset);
+        builder.Finish(BindSocialAccount.EndBindSocialAccount(builder).Value);
+        
+        SendEnvelope(Opcode.C2S_BindSocialAccount, builder.SizedByteArray());
+    }
+
+    public void SendSocialLogin(string authProvider, string providerId, string idToken = "")
+    {
+        if (ConnectionState == ClientConnectionState.Disconnected) return;
+
+        var builder = new FlatBufferBuilder(64);
+        var providerOffset = builder.CreateString(authProvider);
+        var providerIdOffset = builder.CreateString(providerId);
+        var idTokenOffset = builder.CreateString(idToken);
+        
+        SocialLogin.StartSocialLogin(builder);
+        SocialLogin.AddAuthProvider(builder, providerOffset);
+        SocialLogin.AddProviderId(builder, providerIdOffset);
+        SocialLogin.AddIdToken(builder, idTokenOffset);
+        builder.Finish(SocialLogin.EndSocialLogin(builder).Value);
+        
+        SendEnvelope(Opcode.C2S_SocialLogin, builder.SizedByteArray());
     }
 
     public void SendModifyResource(string resourceType, int delta)

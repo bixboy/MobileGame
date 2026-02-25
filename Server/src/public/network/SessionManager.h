@@ -4,6 +4,7 @@
 #include <functional>
 #include "enet.h"
 #include "core/Types.h"
+#include <string>
 
 
 namespace MMO::Network
@@ -32,8 +33,11 @@ namespace MMO::Network
         // Deconnexion — supprime la session et retourne ses donnees
         std::optional<PlayerSession> OnDisconnect(ENetPeer* peer);
 
-        // Login reussi — associe un PlayerID et un EntityID a la session
-        void OnLogin(ENetPeer* peer, PlayerID playerID, EntityID entityID);
+        // Login reussi — associe un PlayerID et un EntityID a la session. Retourne le token de session genéré.
+        std::string OnLogin(ENetPeer* peer, PlayerID playerID, EntityID entityID);
+
+        // Valide un token de session. Retourne true si valide.
+        bool ValidateSessionToken(PlayerID playerID, const std::string& token) const;
 
         // Resout un PeerID en ENetPeer* valide (safe pour les callbacks async)
         ENetPeer* FindPeer(uint32_t peerID) const;
@@ -55,6 +59,9 @@ namespace MMO::Network
 
     private:
         std::unordered_map<uint32_t, PlayerSession> m_sessions;
+        std::unordered_map<PlayerID, std::string> m_sessionTokens; // PlayerID -> Token
         DisconnectCallback m_onDisconnect;
+
+        std::string GenerateSecureToken();
     };
 }

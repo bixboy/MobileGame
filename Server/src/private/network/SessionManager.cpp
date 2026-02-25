@@ -1,5 +1,8 @@
 #include "network/SessionManager.h"
 #include "utils/Logger.h"
+#include <random>
+#include <sstream>
+#include <iomanip>
 
 namespace MMO::Network
 {
@@ -50,15 +53,15 @@ namespace MMO::Network
         return session;
     }
 
-    void SessionManager::OnLogin(ENetPeer* peer, PlayerID playerID, EntityID entityID)
+    std::string SessionManager::OnLogin(ENetPeer* peer, PlayerID playerID, EntityID entityID)
     {
-        if (!peer) return;
+        if (!peer) return "";
 
         auto it = m_sessions.find(peer->connectID);
         if (it == m_sessions.end())
         {
             LOG_ERROR("OnLogin appele pour un peer sans session: {}", peer->connectID);
-            return;
+            return "";
         }
 
         // Promotion de la session en authentifiee
@@ -66,7 +69,35 @@ namespace MMO::Network
         it->second.entityID = entityID;
         it->second.isAuthenticated = true;
 
-        LOG_INFO("Session authentifiee (PeerID: {}, PlayerID: {})", peer->connectID, playerID);
+        // Generation et stockage du token
+        std::string token = GenerateSecureToken();
+        m_sessionTokens[playerID] = token;
+
+        LOG_INFO("Session authentifiee (PeerID: {}, PlayerID: {}) - Token genere", peer->connectID, playerID);
+        return token;
+    }
+
+    bool SessionManager::ValidateSessionToken(PlayerID playerID, const std::string& token) const
+    {
+        auto it = m_sessionTokens.find(playerID);
+        if (it != m_sessionTokens.end() && it->second == token)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    std::string SessionManager::GenerateSecureToken()
+    {
+        // Generation d'un token aleatoire basique (uuid-like)
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<uint64_t> dis;
+        
+        std::stringstream ss;
+        ss << std::hex << std::setfill('0') << std::setw(16) << dis(gen) 
+           << std::setw(16) << dis(gen);
+        return ss.str();
     }
 
     ENetPeer* SessionManager::FindPeer(uint32_t peerID) const

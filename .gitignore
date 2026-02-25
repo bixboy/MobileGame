@@ -45,6 +45,7 @@ Desktop.ini
 [Uu]ser[Ss]ettings/
 [Mm]emoryCaptures/
 [Rr]ecordings/
+[Aa]ssets/_Recovery/
 
 # Mono / crash reports
 mono_crash.*
@@ -66,6 +67,11 @@ sysinfo.txt
 *.unitypackage
 *.unitypackage.meta
 *.app
+
+# Large Firebase / Plugin binaries
+*.bundle
+*.so
+*.a
 
 # JetBrains Rider plugin
 MMO_MobileGame/[Aa]ssets/Plugins/Editor/JetBrains*

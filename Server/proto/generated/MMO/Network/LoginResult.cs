@@ -28,22 +28,32 @@ public struct LoginResult : IFlatbufferObject
   public ArraySegment<byte>? GetMessageBytes() { return __p.__vector_as_arraysegment(8); }
 #endif
   public byte[] GetMessageArray() { return __p.__vector_as_array<byte>(8); }
+  public string SessionToken { get { int o = __p.__offset(10); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetSessionTokenBytes() { return __p.__vector_as_span<byte>(10, 1); }
+#else
+  public ArraySegment<byte>? GetSessionTokenBytes() { return __p.__vector_as_arraysegment(10); }
+#endif
+  public byte[] GetSessionTokenArray() { return __p.__vector_as_array<byte>(10); }
 
   public static Offset<MMO.Network.LoginResult> CreateLoginResult(FlatBufferBuilder builder,
       bool success = false,
       int account_id = 0,
-      StringOffset messageOffset = default(StringOffset)) {
-    builder.StartTable(3);
+      StringOffset messageOffset = default(StringOffset),
+      StringOffset session_tokenOffset = default(StringOffset)) {
+    builder.StartTable(4);
+    LoginResult.AddSessionToken(builder, session_tokenOffset);
     LoginResult.AddMessage(builder, messageOffset);
     LoginResult.AddAccountId(builder, account_id);
     LoginResult.AddSuccess(builder, success);
     return LoginResult.EndLoginResult(builder);
   }
 
-  public static void StartLoginResult(FlatBufferBuilder builder) { builder.StartTable(3); }
+  public static void StartLoginResult(FlatBufferBuilder builder) { builder.StartTable(4); }
   public static void AddSuccess(FlatBufferBuilder builder, bool success) { builder.AddBool(0, success, false); }
   public static void AddAccountId(FlatBufferBuilder builder, int accountId) { builder.AddInt(1, accountId, 0); }
   public static void AddMessage(FlatBufferBuilder builder, StringOffset messageOffset) { builder.AddOffset(2, messageOffset.Value, 0); }
+  public static void AddSessionToken(FlatBufferBuilder builder, StringOffset sessionTokenOffset) { builder.AddOffset(3, sessionTokenOffset.Value, 0); }
   public static Offset<MMO.Network.LoginResult> EndLoginResult(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<MMO.Network.LoginResult>(o);
@@ -59,6 +69,7 @@ static public class LoginResultVerify
       && verifier.VerifyField(tablePos, 4 /*Success*/, 1 /*bool*/, 1, false)
       && verifier.VerifyField(tablePos, 6 /*AccountId*/, 4 /*int*/, 4, false)
       && verifier.VerifyString(tablePos, 8 /*Message*/, false)
+      && verifier.VerifyString(tablePos, 10 /*SessionToken*/, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

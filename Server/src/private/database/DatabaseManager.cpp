@@ -102,6 +102,7 @@ namespace MMO::Database
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT UNIQUE NOT NULL,
                     password_hash TEXT,
+                    device_id TEXT UNIQUE,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     last_login_at DATETIME
                 )
@@ -121,6 +122,18 @@ namespace MMO::Database
                     gold INTEGER DEFAULT 100,
                     FOREIGN KEY (account_id) REFERENCES accounts(id),
                     UNIQUE(account_id, kingdom_id)
+                )
+            )");
+
+            // Table des liaisons de comptes sociaux (Google, Apple, etc.)
+            m_db->exec(R"(
+                CREATE TABLE IF NOT EXISTS account_bindings (
+                    account_id INTEGER NOT NULL,
+                    auth_provider TEXT NOT NULL,
+                    auth_provider_id TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (auth_provider, auth_provider_id),
+                    FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE
                 )
             )");
             

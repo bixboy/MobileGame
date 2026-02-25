@@ -12,9 +12,53 @@ table Login
     password: string;
 }
 
+table GuestLogin
+{
+    device_id: string;
+}
+
+table Reconnect
+{
+    account_id: int;
+    session_token: string;
+}
+
 table LoginResult 
 {
     success: bool;
     account_id: int;
     message: string;
+    session_token: string;
+}
+
+table BindAccount
+{
+    username: string;
+    password: string;
+}
+
+table BindAccountResult
+{
+    success: bool;
+    message: string;
+}
+
+table BindSocialAccount
+{
+    auth_provider: string;
+    provider_id: string;
+    id_token: string;
+}
+
+table BindSocialAccountResult
+{
+    success: bool;
+    message: string;
+}
+
+table SocialLogin
+{
+    auth_provider: string;
+    provider_id: string;
+    id_token: string;
 }

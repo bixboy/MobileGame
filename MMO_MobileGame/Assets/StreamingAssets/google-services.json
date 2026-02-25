@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "962756805907",
+    "project_id": "mobilegame-35199",
+    "storage_bucket": "mobilegame-35199.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962756805907:android:c86b5833f2b849034446e6",
+        "android_client_info": {
+          "package_name": "com.googlesignin.com.unity.template.urpblank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962756805907-r89n115bng5c26dkl5mfla456uts28rp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.googlesignin.com.unity.template.urpblank",
+            "certificate_hash": "d8ebf6c53888afaffbf141e92c2017d34452334d"
+          }
+        },
+        {
+          "client_id": "962756805907-6c02tcmopjp7f507lrnbgaorcd1esonn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD04W5ulQEnm0JtVr6U2Z_Bl0LTJMCy6EA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962756805907-6c02tcmopjp7f507lrnbgaorcd1esonn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -34,6 +34,10 @@ public class KingdomUI : MonoBehaviour
         {
             kingdomPanel.SetActive(true);
         }
+        else
+        {
+            Debug.LogError("[KingdomUI] kingdomPanel n'est pas assigné !");
+        }
         SetStatus("Selectionnez un royaume...", Color.white);
     }
 

@@ -15,6 +15,13 @@ enum Opcode : ushort
     // Authentification (100-199)
     C2S_Login = 100,
     S2C_LoginResult = 101,
+    C2S_GuestLogin = 107,
+    C2S_Reconnect = 108,
+    C2S_BindAccount = 110,
+    S2C_BindAccountResult = 111,
+    C2S_BindSocialAccount = 112,
+    S2C_BindSocialAccountResult = 113,
+    C2S_SocialLogin = 114,
 
     // Royaumes (100-199 suite)
     S2C_KingdomList = 105,
